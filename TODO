@@ -1,0 +1,191 @@
+
+
+
+
+/**
+ * atomic
+ */
+
+/**
+ * random
+ */
+
+/**
+ * ID
+ */
+
+// UUID
+// snowflake
+
+/**
+ * data structure and algorithm
+ */
+// lru_cache
+// bitset
+// bloom filter
+// skip list
+// rate limit
+
+// string stream
+// string opterator: split, strip, replace, ...
+
+inline std::string to_upper(std::string str) {
+  std::string res = str;
+  std::transform(res.begin(), res.end(), res.begin(), std::toupper);
+}
+
+inline std::string to_lower(std::string str) {
+  std::string res = str;
+  std::transform(res.begin(), res.end(), res.begin(), std::tolower);
+}
+
+inline bool equals_ignore_case(std::string str1, std::string str2) {
+  return to_upper(str1) == to_upper(str2);
+}
+
+/**
+ * hash function
+ */
+
+/**
+ * logger
+ */
+
+// sync, async
+
+/**
+ * stream
+ */
+
+// byte
+// char
+// line
+// ...
+
+/**
+ * unitest
+ */
+
+// coverage
+
+/**
+ * argparser
+ */
+
+/**
+ * json
+ */
+
+/**
+ * time
+ */
+
+/**
+ * thread
+ */
+
+// thread pool: 4type in java
+
+/**
+ * lock
+ */
+
+// lock free
+/**
+ * decimal
+ */
+
+/**
+ * Character encoding
+ * charset
+ */
+
+// base64
+// base62
+// utf-8 gbk
+
+/**
+ * co
+ */
+
+/**
+ * net
+ */
+
+// http
+// cookies
+// dns
+// ssl
+// ipv4、ipv6
+// URL URI path
+// socket
+// tcp
+// udp
+// RPC
+
+/**
+ * path
+ */
+
+// opterator: join, pair<dir_path, file_path> split(path), dirs(), extension_name()
+// file path
+
+/**
+ * file system
+ */
+
+// opterator: exists, isdir, modify_time, file_size, mkdir, remove, rename, symbolic_link, hard_link
+// file opterator: open, read, readlines, write, writeline, close, flush
+
+/**
+ * OS
+ */
+
+// opterator: home_dir, current_work_dir, current_process_name, current_process_dir, pid, cpu_num, memory_size, daemon, command, sys_info, ...
+
+/**
+ * computer
+ */
+
+// scheduler
+// time task
+
+/**
+ * debug
+ */
+
+std::string dbg(T);  // print DS
+
+/**
+ * print
+ */
+
+// print DS: support color, typeface, ...
+
+/**
+ * DB
+ */
+
+// mysql sql
+// redis sql
+
+// ORM
+
+/**
+ * web bench
+ */
+
+/**
+ * compress
+ */
+/**
+ * memory pool
+ */
+
+/**
+ * assert
+ */
+
+/**
+ * execption
+ */
