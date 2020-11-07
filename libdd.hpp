@@ -18,6 +18,7 @@
 
 #include <exception>
 #include <string>
+#include <iostream>
 
 namespace libdd {
 
@@ -130,7 +131,8 @@ inline To force_cast(From f) {
   To res;
   try {
     res = (To)f;
-  } catch (std::exception e) {
+  } catch (const char* err_msg) {
+    std::cerr << err_msg << std::endl;
     throw "force_cast err";
     return NULL;
   }
