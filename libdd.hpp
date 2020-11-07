@@ -18,11 +18,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <chrono>
 #include <exception>
 #include <iostream>
+#include <mutex>
+#include <random>
 #include <string>
 #include <vector>
-#include <random>
 
 namespace libdd {
 
@@ -269,7 +271,7 @@ char* reverse(char* buffer, int i, int j) {
   return buffer;
 }
 
-char* itoa(int value, char* buffer, int base) { // FIXME
+char* itoa(int value, char* buffer, int base) {  // FIXME
   if (base < 2 || base > 32)
     return buffer;
   int n = abs(value);
@@ -353,7 +355,7 @@ class Random {
   }
 
   template <typename Type>
-  void shuffle(std::vector<Type>& arr) { // FIXME: array...
+  void shuffle(std::vector<Type>& arr) {  // FIXME: array...
     std::shuffle(arr.begin(), arr.end(), engine_);
   }
 
@@ -377,6 +379,47 @@ class Random {
  private:
   std::default_random_engine engine_;
   long long int seed_;
+};
+
+/**
+ * ID generate
+ * 
+ * rand-str, rand-num, snowflake, auto-inc-id
+ * TODO: UUID, segment mode, ...
+ */
+// ID: 0 - 41 bits timestamp - 5 bits data center id - 5 bits machine id - 12 bits sequence number
+// support thread safe
+class SnowFlake {
+ public:
+  SnowFlake(const int data_center_id, const int machine_id);
+
+  std::uint64_t next_id();
+
+ private:
+  std::uint64_t get_next_ms();
+  std::uint64_t get_curr_timestamp();
+
+ private:
+  static const std::uint64_t start_timestamp = 1480166465631;
+
+  static const std::uint64_t sequence_bit = 12;
+  static const std::uint64_t machine_bit = 5;
+  static const std::uint64_t data_center_bit = 5;
+
+  static const std::uint64_t sequence_max_val = -1 ^ (std::uint64_t(-1) << sequence_bit);
+  static const std::uint64_t machine_max_val = -1 ^ (std::uint64_t(-1) << machine_bit);
+  static const std::uint64_t data_center_max_val = -1 ^ (std::uint64_t(-1) << data_center_bit);
+
+  static const std::uint64_t machine_left = sequence_bit;
+  static const std::uint64_t data_center_left = sequence_bit + machine_bit;
+  static const std::uint64_t timestamp_left = data_center_left + data_center_bit;
+
+  std::uint64_t data_center_id;
+  std::uint64_t machine_id;
+  std::uint64_t sequence_id;
+  std::uint64_t last_timestamp;
+
+  std::mutex mtx;
 };
 
 }  // namespace libdd

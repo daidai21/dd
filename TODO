@@ -8,13 +8,6 @@
 
 
 /**
- * ID
- */
-
-// UUID
-// snowflake
-
-/**
  * data structure and algorithm
  */
 // lru_cache
