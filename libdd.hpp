@@ -71,6 +71,9 @@ typedef unsigned char byte;
 
 // constant
 #define PI acos(-1)  // 3.1415926
+const std::string DD_CHARS_AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const std::string DD_CHARS_az = "abcdefghijklmnopqrstuvwxyz";
+const std::string DD_CHARS_AZaz = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 // macro
 #define DD_CAS(val, old_val, new_val) __sync_bool_compare_and_swap((val), (old_val), (new_val))
