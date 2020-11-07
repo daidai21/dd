@@ -7,18 +7,20 @@
  * Platform    : Unix-like
  *************************************************************************** */
 
-/**
- * API like: Python3, Java8
- */
+/*
+* API like: Python3, Java8
+*/
 
 #ifndef __LIBDD__HPP__
 #define __LIBDD__HPP__
 
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include <exception>
-#include <string>
 #include <iostream>
+#include <string>
 
 namespace libdd {
 
@@ -140,9 +142,161 @@ inline To force_cast(From f) {
 }
 
 // saft_cast type convert: char <-> int <-> long <-> long long int <-> float <-> double <-> string ...
-// TODO
+template <typename FromType, typename ToType>
+struct converter {};
+
+template <typename FromType>
+struct converter<int, FromType> {
+ public:
+  static int convert(const std::string& from) {
+    return std::atoi(from.c_str());
+  }
+
+  static int convert(const char* from) {
+    return std::atoi(from);
+  }
+};
+
+template <typename FromType>
+struct converter<long int, FromType> {
+ public:
+  static long int convert(const std::string& from) {
+    return std::atol(from.c_str());
+  }
+
+  static long int convert(const char* from) {
+    return std::atol(from);
+  }
+};
+
+template <typename FromType>
+struct converter<long long int, FromType> {
+ public:
+  static long long int convert(const std::string& from) {
+    return std::atoll(from.c_str());
+  }
+
+  static long long int convert(const char* from) {
+    return std::atoll(from);
+  }
+};
+
+template <typename FromType>
+struct converter<double, FromType> {
+ public:
+  static double convert(const std::string& from) {
+    return std::atof(from.c_str());
+  }
+
+  static double convert(const char* from) {
+    return std::atof(from);
+  }
+};
+
+template <typename FromType>
+struct converter<float, FromType> {
+ public:
+  static double convert(const std::string& from) {
+    return static_cast<float>(std::atof(from.c_str()));
+  }
+
+  static double convert(const char* from) {
+    return static_cast<float>(std::atof(from));
+  }
+};
+
+template <typename FromType>
+struct converter<bool, FromType> {
+ public:
+  static bool convert(int from) {
+    return from > 0 ? true : false;
+  }
+
+  static bool convert(const std::string& from) {
+    return std::atoi(from.c_str()) > 0 ? true : false;
+  }
+};
+
+template <typename FromType>
+struct converter<std::string, FromType> {
+ public:
+  static std::string convert(int from) {
+    return std::to_string(from);
+  }
+
+  static std::string convert(double from) {
+    return std::to_string(from);
+  }
+
+  static std::string convert(float from) {
+    return std::to_string(from);
+  }
+
+  static std::string convert(const std::string& from) {
+    return from;
+  }
+
+  static std::string convert(const char* from) {
+    return from;
+  }
+
+  static std::string convert(char from) {
+    return std::string(&from);
+  }
+};
+
+template <typename ToType, typename FromType>
+ToType safe_cast(const FromType& from) {
+  return converter<ToType, FromType>::convert(from);
+}
+
 // base convert: 2 <-> 8 <-> 10 <-> 16 <-> 32 <-> 64 <-> 128 <-> 256 ...
-// TODO
+// itoa func ref: https://www.techiedelight.com/implement-itoa-function-in-c/
+inline void swap(char* x, char* y) {
+  char t = *x;
+  *x = *y;
+  *y = t;
+}
+
+char* reverse(char* buffer, int i, int j) {
+  while (i < j)
+    swap(&buffer[i++], &buffer[j--]);
+  return buffer;
+}
+
+char* itoa(int value, char* buffer, int base) { // FIXME
+  if (base < 2 || base > 32)
+    return buffer;
+  int n = abs(value);
+  int i = 0;
+  while (n) {
+    int r = n % base;
+    if (r >= 10)
+      buffer[i++] = 65 + (r - 10);
+    else
+      buffer[i++] = 48 + r;
+    n = n / base;
+  }
+  if (i == 0)
+    buffer[i++] = '0';
+  if (value < 0 && base == 10)
+    buffer[i++] = '-';
+  buffer[i] = '\0';
+  return reverse(buffer, 0, i - 1);
+}
+
+std::string base_convert(const std::string& val, int from_base, int to_base) {
+  char* buf;
+  strtol(val.c_str(), &buf, from_base);
+  char* res = nullptr;
+  itoa(safe_cast<int>(buf), res, to_base);
+  return std::string(res);
+}
+
+template <typename FromType>
+std::string base_convert(const FromType& val, int from_base, int to_base) {
+  return base_convert(safe_cast<std::string>(val), from_base, to_base);
+}
 
 }  // namespace libdd
 
