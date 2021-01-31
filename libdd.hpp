@@ -28,9 +28,9 @@
 
 namespace libdd {
 
-/**
+/* ****************************************************************************
  * basic define
- */
+ *************************************************************************** */
 // basic type
 typedef int8_t int8;
 typedef int16_t int16;
@@ -90,9 +90,9 @@ const std::string DD_CHARS_AZaz = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrs
 
 #define GET_CURRENT_MICRO std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now().time_since_epoch()).count()
 
-/**
+/* ****************************************************************************
  * class util
- */
+ *************************************************************************** */
 // .
 #define DISALLOW_COPY_AND_ASSIGN(Type) \
   Type(const Type&) = delete;          \
@@ -131,9 +131,10 @@ class Singleton {
   }
 };
 
-/**
+
+/* ****************************************************************************
  * type cast and convert
- */
+ *************************************************************************** */
 // force_cast
 template <typename To, typename From>
 inline To force_cast(From f) {
@@ -305,9 +306,9 @@ std::string base_convert(const FromType& val, int from_base, int to_base) {
   return base_convert(safe_cast<std::string>(val), from_base, to_base);
 }
 
-/**
+/* ****************************************************************************
  * random
- */
+ *************************************************************************** */
 class Random {
  public:
   Random() {
@@ -381,12 +382,13 @@ class Random {
   long long int seed_;
 };
 
-/**
+
+/* ****************************************************************************
  * ID generate
  * 
  * rand-str, rand-num, snowflake, auto-inc-id
  * TODO: UUID, segment mode, ...
- */
+ *************************************************************************** */
 // ID: 0 - 41 bits timestamp - 5 bits data center id - 5 bits machine id - 12 bits sequence number
 // support thread safe
 class SnowFlake {
